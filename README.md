@@ -4,13 +4,12 @@ A modern web application that allows users to explore, search, and discover movi
 
 ## 🚀 Technologies Used
 
-- React 18
-- Vite
-- TypeScript
-- Tailwind CSS
-- React Router
+- React 19
+- Vite 6
+- React Router 7
+- JavaScript
+- CSS3
 - TMDB API
-- Axios
 
 ## 📋 Prerequisites
 
@@ -49,6 +48,7 @@ yarn install
 3. Create a `.env` file in the root directory and add your TMDB API key:
 ```env
 VITE_TMDB_API_KEY=your_api_key_here
+VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
 ```
 
 4. Start the development server:
@@ -65,6 +65,7 @@ yarn dev
 The following environment variables are required:
 
 - `VITE_TMDB_API_KEY`: Your TMDB API key
+- `VITE_TMDB_BASE_URL`: The TMDB API base URL
 
 Note: The `.env` file is already added to `.gitignore` to ensure your API key remains secure.
 
@@ -72,6 +73,8 @@ Note: The `.env` file is already added to `.gitignore` to ensure your API key re
 
 - Browse popular movies
 - Search for specific movies
-- View detailed movie information
+- Filter movies by genre
+- View detailed movie information including trailers
+- Add movies to favorites
 - Responsive design for all devices
 - Modern and intuitive user interface
