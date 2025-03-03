@@ -1,31 +1,36 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMovieDetails } from '../services/api';
+import { getMovieDetails, getMovieVideos } from '../services/api';
 import { useMovieContext } from '../contexts/MovieContext';
 import '../css/MovieDetails.css';
 
 function MovieDetails() {
     const { movieId } = useParams();
     const [movie, setMovie] = useState(null);
+    const [trailer, setTrailer] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { addFavorite, removeFavorite, isFavorite } = useMovieContext();
 
     useEffect(() => {
-        const fetchMovieDetails = async () => {
+        const fetchMovieData = async () => {
             try {
-                const data = await getMovieDetails(movieId);
-                setMovie(data);
+                const [movieData, trailerData] = await Promise.all([
+                    getMovieDetails(movieId),
+                    getMovieVideos(movieId)
+                ]);
+                setMovie(movieData);
+                setTrailer(trailerData);
                 setError(null);
             } catch (err) {
-                console.error('Error fetching movie details:', err);
+                console.error('Error fetching movie data:', err);
                 setError('Failed to load movie details');
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchMovieDetails();
+        fetchMovieData();
     }, [movieId]);
 
     const handleFavoriteClick = () => {
@@ -85,6 +90,21 @@ function MovieDetails() {
                         <h2>Overview</h2>
                         <p>{movie.overview}</p>
                     </div>
+
+                    {trailer && (
+                        <div className="movie-trailer">
+                            <h2>Trailer</h2>
+                            <div className="trailer-container">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${trailer.key}`}
+                                    title={trailer.name}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="additional-info">
                         <div className="info-item">

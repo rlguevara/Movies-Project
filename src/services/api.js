@@ -42,3 +42,15 @@ export const getMovieDetails = async (movieId) => {
     const data = await response.json();
     return data;
 }
+
+export const getMovieVideos = async (movieId) => {
+    const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`);
+    const data = await response.json();
+    // Filter for official YouTube trailers
+    const trailers = data.results.filter(
+        video => video.site === "YouTube" && 
+        (video.type === "Trailer" || video.type === "Teaser") &&
+        video.official
+    );
+    return trailers.length > 0 ? trailers[0] : null;
+}
